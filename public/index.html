@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mexico City Slang</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <h1>Mexico City Slang</h1>
+    <form id="myForm">
+        <label for="inputText">Enter your text:</label>
+        <input type="text" id="message" name="message"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response"></div>
+    <script>
+        const form = document.getElementById('myForm');
+        const responseDiv = document.getElementById('response');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            console.log(JSON.stringify(Object.fromEntries(formData.entries())));
+            const response = await fetch('http://localhost:3000/complete', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            responseDiv.innerHTML = `<p>${data.response}</p>`;
+        });
+    </script>
+</body>
+
+</html>
